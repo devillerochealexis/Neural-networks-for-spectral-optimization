@@ -1,0 +1,32 @@
+// Isolated Dirichlet-only validation solver. Parameters arrive in cwd/input.txt.
+verbosity = 0;
+int m, boundaryPoints, order;
+real[int] c;
+{
+    ifstream f("input.txt");
+    f >> m >> boundaryPoints >> order;
+    c.resize(2*m+1);
+    for (int i=0; i<c.n; i++) f >> c[i];
+}
+func real radius(real t) {
+    real r=c[0];
+    for (int k=1; k<=m; k++) r+=c[k]*cos(k*t)+c[m+k]*sin(k*t);
+    return r;
+}
+border C(t=0,2*pi) { x=radius(t)*cos(t); y=radius(t)*sin(t); label=1; }
+mesh Th=buildmesh(C(boundaryPoints));
+
+fespace Vh(Th,P2);
+varf stiffness(u,v)=int2d(Th)(dx(u)*dx(v)+dy(u)*dy(v))+on(1,u=0);
+varf mass(u,v)=int2d(Th)(u*v);
+matrix K=stiffness(Vh,Vh,solver=sparsesolver);
+matrix M=mass(Vh,Vh,solver=CG,eps=1e-14);
+real[int] ev(order);
+Vh[int] eigenfunctions(order);
+int converged=EigenValue(K,M,sym=true,sigma=0,value=ev,vector=eigenfunctions,tol=1e-10,maxit=2000,ncv=2*order+4);
+{
+    ofstream f("output.txt");
+    f.precision(16);
+    f << converged << " " << Th.nv << " " << Th.nt << " " << int2d(Th)(1.) << endl;
+    for (int i=0; i<order; i++) f << ev[i] << endl;
+}
