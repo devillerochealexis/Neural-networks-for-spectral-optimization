@@ -1,0 +1,12 @@
+{
+  "models": [
+    {
+      "name": "vector10_relu",
+      "url": "models/model-2a3f0f36712c8cf10e053a8af0f82f33e4630e25be673f2d2f2e8ec6c464be97.spectral.json"
+    },
+    {
+      "name": "vector10_silu",
+      "url": "models/model-4d8764fd17453ba1919e431547ad179fa5669dcc13822a8e9b1ef073ddc9f42c.spectral.json"
+    }
+  ]
+}

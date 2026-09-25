@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Optimize positive radial Fourier shapes using a learned Dirichlet spectrum, entirely in your browser.">
+  <title>Spectral Shape Lab · Simple</title><link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="masthead"><div><a class="brand" href="./">SPECTRAL / SHAPE LAB SIMPLE</a><h1>Shape optimization from a saved model.</h1><p>Explore area-constrained shapes through a learned Dirichlet spectrum.</p></div><span class="local-badge"><span></span> Computed in your browser</span></header>
+  <main class="layout">
+    <aside class="controls panel">
+      <div class="section-heading"><span class="eyebrow">01 / MODEL</span><span id="model-state" class="tag">Loading</span></div>
+      <h2 id="model-name">Ten-eigenvalue ensemble</h2><p id="model-details" class="muted">Preparing the saved network…</p>
+      <label for="model-select">Saved model</label><select id="model-select" disabled></select>
+      <p class="hint"><a href="./guide.html" target="_blank">Model bundling &amp; hosting guide</a></p>
+      <hr>
+      <fieldset id="settings" disabled>
+        <legend class="eyebrow">02 / OBJECTIVE</legend>
+        <label for="preset">Choose a saved function</label><select id="preset"><option value="custom">Custom formula</option></select>
+        <label for="expression">F(x₁, …, x₁₀)</label><textarea id="expression" rows="3" spellcheck="false" aria-describedby="formula-help formula-feedback">x5 + 0.5*x6</textarea>
+        <p id="formula-help" class="hint">x1…x10 are eigenvalues at the chosen area. Use <code>+ − * / ^</code> and parentheses.</p>
+        <div class="button-row"><button id="validate" class="secondary small" type="button">Check formula</button><button id="save-formula" class="quiet small" type="button">Save formula</button></div>
+        <p id="formula-feedback" class="formula-feedback" role="status"></p>
+        <details><summary>Functions &amp; symbolic derivatives</summary><p class="hint">Supported: sin, cos, tan, asin, acos, atan, sinh, cosh, tanh, exp, log (or ln), sqrt; constants pi and e. Write multiplication explicitly, for example <code>2*x5</code>. No abs, min, max or arbitrary code.</p><div id="derivatives" class="derivatives"></div><p class="hint">Your formula should be C¹ on the spectra explored. Undefined values or derivatives trigger backtracking. Regularity is not proved automatically.</p></details>
+        <hr><h3 class="eyebrow">03 / SEARCH</h3>
+        <div class="form-grid"><div><label for="direction">Direction</label><select id="direction"><option value="min">Minimize F</option><option value="max">Maximize F</option></select></div><div><label for="area">Fixed area</label><input id="area" type="number" value="1" min="0.00000001" max="100000000" step="any" required></div><div><label for="starts">Starting shapes</label><input id="starts" type="number" value="16" min="1" max="32" step="1" required></div><div><label for="steps">Steps per start</label><input id="steps" type="number" value="300" min="0" max="2000" step="1" required></div></div>
+        <label for="seed">Random seed</label><input id="seed" type="number" value="41" min="0" max="4294967295" step="1">
+        <div class="constraint"><span class="constraint-icon">✓</span><div><strong>Area fixed. Boundary stays simple.</strong><span id="constraint-details">Positive radius and harmonic caps are enforced at every step.</span></div></div>
+      </fieldset>
+      <div class="run-buttons"><button id="run" class="primary" disabled>Start optimization <span aria-hidden="true">→</span></button><button id="pause" class="secondary" disabled>Pause</button><button id="stop" class="secondary" disabled>Stop</button></div>
+      <p class="hint">Starts are the disk and seeded random feasible shapes. No training shapes or previous optimizers are used. A run may take minutes; you can pause or stop and save the best shape.</p>
+    </aside>
+    <section class="workspace" aria-label="Optimization results">
+      <div class="panel plot-panel">
+        <div class="plot-header"><div><span class="eyebrow">SHAPE EXPLORER</span><h2 id="plot-title">Ready to explore</h2></div><span id="run-state" class="tag">Initializing</span></div>
+        <div class="status-row"><span id="status" role="status" aria-live="polite">Loading the model…</span><span id="elapsed">0.0 s</span></div>
+        <div id="error" class="error" role="alert" hidden></div>
+        <div class="shape-wrap"><svg id="shape" viewBox="0 0 720 560" role="img" aria-label="Current and best radial domains compared with the equal-area disk"></svg><div class="plot-note">Fixed-area Fourier boundary<br><span id="plot-note-detail">15 harmonics · positive radial graph</span></div></div>
+        <div class="legend"><span><i class="swatch best"></i>Best so far</span><span><i class="swatch current"></i>Current iterate</span><span><i class="swatch disk"></i>Equal-area disk</span></div>
+        <div class="metrics"><div><span>Best predicted F</span><strong id="best-value">—</strong></div><div><span>Current predicted F</span><strong id="current-value">—</strong></div><div><span>Area</span><strong id="area-value">1.0000</strong></div><div><span>Certified r / a₀</span><strong id="floor-value">≥ 0.2500</strong></div></div>
+      </div>
+      <div class="lower-grid">
+        <div class="panel history-panel"><div class="section-heading"><h2>Objective history</h2><span id="iteration-label" class="muted">No iterations yet</span></div><svg id="history" viewBox="0 0 620 240" role="img" aria-label="Objective value and best-so-far history"></svg><p class="hint">Current objective in blue; best so far in teal. Values shown are raw F, including during maximization.</p></div>
+        <div class="panel spectrum-panel"><div class="section-heading"><h2>Best-shape spectrum</h2><span class="tag">Predicted</span></div><div id="spectrum" class="spectrum-grid"></div><p id="ordering" class="hint"></p></div>
+      </div>
+      <div class="panel save-panel"><div><h2>Keep your result</h2><p id="result-summary" class="muted">Save the best shape, its coefficients, or the full reproducible run.</p></div><div class="button-row"><button id="save-json" class="secondary" disabled>Run JSON</button><button id="save-csv" class="secondary" disabled>Coefficients CSV</button><button id="save-svg" class="secondary" disabled>SVG</button><button id="save-png" class="secondary" disabled>PNG</button></div></div>
+      <p class="disclaimer">All displayed spectra and objectives are neural predictions. This app performs no PDE solve. All models use the same random-start rule. Ensemble spread is not an accuracy guarantee; stopping does not certify a global optimum.</p>
+    </section>
+  </main>
+  <footer><span>Fourier geometry. Learned spectra. Local computation.</span><a href="./guide.html" target="_blank">Documentation &amp; reproducibility ↗</a></footer>
+  <script type="module" src="./src/app.js"></script>
+</body>
+</html>

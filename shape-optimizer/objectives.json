@@ -1,0 +1,16 @@
+[
+  {"name":"λ₃ — third eigenvalue","expression":"x3"},
+  {"name":"λ₅ — fifth eigenvalue","expression":"x5"},
+  {"name":"λ₆ — sixth eigenvalue","expression":"x6"},
+  {"name":"λ₇ — seventh eigenvalue","expression":"x7"},
+  {"name":"λ₈ — eighth eigenvalue","expression":"x8"},
+  {"name":"λ₉ — ninth eigenvalue","expression":"x9"},
+  {"name":"λ₁₀ — tenth eigenvalue","expression":"x10"},
+  {"name":"Weighted sum: λ₅ + λ₆ / 2","expression":"x5 + 0.5*x6"},
+  {"name":"Ratio: λ₆ / λ₁","expression":"x6/x1"},
+  {"name":"Squared gap: (λ₆ − λ₅)²","expression":"(x6-x5)^2"},
+  {"name":"Sum of the first ten","expression":"x1+x2+x3+x4+x5+x6+x7+x8+x9+x10"},
+  {"name":"λ₁ — first eigenvalue","expression":"x1"},
+  {"name":"λ₂ — second eigenvalue","expression":"x2"},
+  {"name":"λ₄ — fourth eigenvalue","expression":"x4"}
+]
