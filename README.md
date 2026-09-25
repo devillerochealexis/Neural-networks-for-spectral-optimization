@@ -8,7 +8,7 @@ The jupyter notebook `Fourier31_training_and_optimization.ipyng` corresponds to 
 
 The directory `data/` contains the files that store the coefficients of the training database and the associated eigenvalues, they correspond rwo by row.
 
-The FreeFEM script `eigenvalues.edp` is the PDE solver used to compute the eigenvalues of a given shape. It is best used with the function `ComputeFreeFEMSpectrum` defined in the notebook. It needs a working installation of the [FreeFEM software](https://freefem.org)
+The FreeFEM script `eigenvalues.edp` is the PDE solver used to compute the eigenvalues of a given shape. It is best used with the function `ComputeFreeFEMSpectrum` defined in the notebook. It needs a working installation of the [FreeFEM software](https://freefem.org).
 
 In the directory `notebook_outputs/` are saved the pretrained models and the computed shapes and associated coefficients used in the examples of the paper.
 
