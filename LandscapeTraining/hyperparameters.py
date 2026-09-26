@@ -1,14 +1,12 @@
 """
 hyperparameters.py
-Architecture and optimization hyperparameters for LandscapeModel, the
-surrogate that predicts the first K Dirichlet-Laplacian
-eigenvalues and eigenfunctions of a 2D domain from a torsion-based
-geometric representation.
+Architecture and optimization hyperparameters for LandscapeModel, the surrogate that predicts the first K Dirichlet-Laplacian eigenvalues and eigenfunctions 
+of a 2D domain from a torsion-based geometric representation.
 """
 
 # Model architecture (see LandscapeModel ) 
 
-IN_CHANNELS = 4
+IN_CHANNELS = 3
 
 N_EIG = 10        
 BASE_CH = 32      
@@ -22,10 +20,7 @@ ALPHA_RATIO = 1.0
 ALPHA_LAM1 = 1.0
 # Weight on the lambda_1 loss.
 
-ALPHA_RQ_VAR = 0.1
-# Weight on the Rayleigh-quotient 
-
-ALPHA_ORTH = 0.01 # just for Gram-Schmidt
+ALPHA_RQ_VAR = 0.1 # for the forward Gram Schmidt process.
 
 
 # Training schedule
